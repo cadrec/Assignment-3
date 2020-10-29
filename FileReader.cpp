@@ -4,7 +4,7 @@
 #include <fstream>
 using namespace std;
 
-FileReader::FileReader() {
+FileReader::FileReader() { //constructor
   stack = new Genstack<char>();
 }
 
@@ -15,37 +15,37 @@ FileReader::FileReader(string name) {
   FileCheck();
 }
 
-FileReader::~FileReader() {
+FileReader::~FileReader() { //destructor
   delete stack;
 }
 
 bool FileReader::FileCheck() {
   string line;
-  ifstream UserIn(fileName);
+  ifstream fileInputCheck(fileName);
   int check = 0;
 
-  if(!UserIn) {
+  if(!fileInputCheck) {//checks to see if file is found
     check = 1;
     cout << "No file was available with the name " << fileName << endl;
 
-    UserIn.close();
+    fileInputCheck.close();
 
   }
 
-  int LineNum = 0;
+  int LineNum = 0;//counts line number
 
-  while(getline(UserIn, line)) {
+  while(getline(fileInputCheck, line)) {
     //cout << "test" << endl; //for testing
-    for(int i = 0; i < line.length(); ++i) {
-      if(line[i] == '(' || line[i] == '{' || line[i] == '[' || line[i] == ')' || line[i] == '}' || line[i] == ']') {
-        if(line[i] == '(' || line[i] == '{' || line[i] == '[') {
+    for(int i = 0; i < line.length(); ++i) {//checks the current link in while loop to see if each char is a delimiter
+      if(line[i] == '(' || line[i] == '{' || line[i] == '[' || line[i] == ')' || line[i] == '}' || line[i] == ']') { //looks for delimiters
+        if(line[i] == '(' || line[i] == '{' || line[i] == '[') { //pushes to stack if it is an opening delimiter
           stack->push(line[i]);
         }
-        else if(line[i] == ')' || line[i] == '}' || line[i] == ']') {
+        else if(line[i] == ')' || line[i] == '}' || line[i] == ']') { //this will tell user there is a missing opening delimiter
           if(stack->empty()) {
-            cout << "There is no match. Missing opening parameter for "<< line[i] << " at line " << LineNum+1 << endl;
+            cout << "Missing opening parameter for "<< line[i] << " at line " << LineNum+1 << endl;
             return false;
-          }
+          }//rest will check to see if delimeters do not match
           if(stack->peek() == '(' && line[i] != ')') {
             cout << "Missing ) at line " << LineNum+1 << endl;
             return false;
@@ -65,22 +65,22 @@ bool FileReader::FileCheck() {
     LineNum++;
   }
 
-  if(stack->empty() && check != 1) {
+  if(stack->empty() && check != 1) { //if case hits, syntax is correct
     //cout << check << endl; //for testing
     cout << "All Delimeters matched up." << endl;
     return true;
   }
-  else {
+  else {//if any case hits here, the file is missing a closing parameter
     if(stack->peek() == '(') {
-      cout << "Reached end of file: missing )" << endl;
+      cout << "Missung closing parameter: )" << endl;
     }
     else if(stack->peek() == '{') {
-      cout << "Reached end of file: missing }" << endl;
+      cout << "Missung closing parameter: }" << endl;
     }
     else if(stack->peek() == '[') {
-      cout << "Reached end of file: missing ]" << endl;
+      cout << "Missung closing parameter: ]" << endl;
     }
     return false;
   }
-  UserIn.close();
+  fileInputCheck.close();
 }

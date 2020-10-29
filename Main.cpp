@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     do{
       string fileName = argv[1];
       FileReader file(fileName);
-      while(true){
+      while(true){//allows for user to continue checking files
         cout << "Would you like to input a new file to check? Type 'y' to continue. Type anything else to exit." << endl;
         cin >> condition;
 

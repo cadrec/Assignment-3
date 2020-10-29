@@ -10,7 +10,7 @@ class FileReader
     FileReader(string name);
     ~FileReader();
     bool FileCheck();
-    
+
 
   private:
     string fileName;
