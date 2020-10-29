@@ -7,3 +7,4 @@ CPSC 350
 Assignment 3
 
 Compile in terminal and use ./a.out "file name" to run code
+Could not figure out how to find file path
